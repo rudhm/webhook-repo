@@ -1,47 +1,68 @@
-# Dev Assessment - Webhook Receiver
+# GitHub Webhook Receiver Dashboard
 
-Please use this repository for constructing the Flask webhook receiver.
+This app uses Flask to receive GitHub webhooks.
+It saves events in MongoDB and shows them on a live dashboard.
 
-*******************
+**Status:** Done (includes Merge events)
 
-## Setup
+## Features
 
-* Create a new virtual environment
+* Updates every 15 seconds
+* Saves all events in MongoDB
+* Supports:
 
-```bash
-pip install virtualenv
-```
+  * PUSH (commits)
+  * PULL REQUEST (new PR)
+  * MERGE (merged PR)
 
-* Create the virtual env
+## Requirements
 
-```bash
-virtualenv venv
-```
+* Python 3
+* MongoDB (running on your computer)
+* Ngrok
 
-* Activate the virtual env
-
-```bash
-source venv/bin/activate
-```
-
-* Install requirements
+## Install
 
 ```bash
-pip install -r requirements.txt
+git clone <your-repo-link>
+cd webhook-repo
+pip install Flask Flask-PyMongo
 ```
 
-* Run the flask application (In production, please use Gunicorn)
+## Run
+
+1. Start MongoDB
+
+```bash
+mongod --dbpath ./data/db
+```
+
+2. Start the app
 
 ```bash
 python run.py
 ```
 
-* The endpoint is at:
+Open: [http://localhost:5000](http://localhost:5000)
+
+3. Start ngrok (new terminal)
 
 ```bash
-POST http://127.0.0.1:5000/webhook/receiver
+ngrok http 5000
 ```
 
-You need to use this as the base and setup the flask app. Integrate this with MongoDB (commented at `app/extensions.py`)
+Copy the HTTPS link.
 
-*******************
+4. Set GitHub Webhook
+
+* Repo → Settings → Webhooks
+* Payload URL: `<ngrok-url>/webhook/receiver`
+* Content type: `application/json`
+* Events: Pushes and Pull requests
+
+## Use
+
+Open:
+[http://localhost:5000/webhook/](http://localhost:5000/webhook/)
+
+Do pushes or PRs in the repo to see live updates.
