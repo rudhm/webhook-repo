@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="15">
+    <title>GitHub Webhook Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 40px; background: #f0f2f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { color: #333; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .event-list { list-style: none; padding: 0; }
+        .event-item { padding: 15px; border-bottom: 1px solid #eee; font-size: 1.1em; color: #444; }
+        .event-item:last-child { border-bottom: none; }
+        
+        /* Optional: Color coding the bullets */
+        .PUSH { border-left: 5px solid #28a745; padding-left: 15px; }
+        .PULL_REQUEST { border-left: 5px solid #ffc107; padding-left: 15px; }
+        .MERGE { border-left: 5px solid #6f42c1; padding-left: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Latest Repository Events</h1>
+        <ul class="event-list">
+            {% for event in events %}
+            <li class="event-item {{ event.action }}">
+                {{ event.ui_message }}
+            </li>
+            {% else %}
+            <li class="event-item">No events received yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
